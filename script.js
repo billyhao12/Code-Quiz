@@ -13,16 +13,19 @@ var
     choiceC = document.createElement('button'),
     choiceD = document.createElement('button');
 
+var choices = [choiceA, choiceB, choiceC, choiceD];
 
 var questions = ['1. What are the three main programming languages of a web developer?', '2. Which element listed does NOT make use of a closing tag?', '3. What should you do if your code isn\'t working?', '4. Which of the following in JavaScript allows you to store multiple named values in one variable?', '5. Which HTML tag prints the largest text?'];
 
 var responses = {
-    one: ['Python, C++ and R', 'HTML, CSS and Java', 'HTML, CSS and JavaScript', 'Python, C++ and JavaScript'],
-    two: ['<p>', '<img>', '<div>', '<h2>'],
-    three: ['Inspect it in a Google Chrome web browser', 'console.log() certain areas to make sure they are working', 'Google alternative solutions', 'All of the above'],
-    four: ['an object', 'an array', 'a function', 'an if statement'],
-    five: ['<h1>', '<h2>', '<h3>', '<p>']
+    one: ['A. Python, C++ and R', 'B. HTML, CSS and Java', 'C. HTML, CSS and JavaScript', 'D. Python, C++ and JavaScript'],
+    two: ['A. <p>', 'B. <img>', 'C. <div>', 'D. <h2>'],
+    three: ['A. Inspect it in a Google Chrome web browser', 'B. console.log() certain areas to make sure they are working', 'C. Google alternative solutions', 'D. All of the above'],
+    four: ['A. an object', 'B. an array', 'C. a function', 'D. an if statement'],
+    five: ['A. <h1>', 'B. <h2>', 'C. <h3>', 'D. <p>']
 };
+
+var answers = [2, 1, 3, 0, 0];
 
 // HTML Elements
 
@@ -47,43 +50,28 @@ function firstQuestion() {
     // Question 1 Display
 
     startButton.addEventListener('click', function (event) {
+
         title.innerHTML = ''; // removes title
-        question.innerHTML = questions[0]; // first question
         startButton.parentNode.removeChild(startButton); // removes start button
+        question.innerHTML = questions[0] + '<br>'; // First question
 
-        choiceA.innerHTML = 'A. ' + responses.one[0];
-        question.appendChild(choiceA);
-
-        choiceB.innerHTML = 'B. ' + responses.one[1];
-        question.appendChild(choiceB);
-
-        choiceC.innerHTML = 'C. ' + responses.one[2];
-        question.appendChild(choiceC);
-
-        choiceD.innerHTML = 'D. ' + responses.one[3];
-        question.appendChild(choiceD);
+        for (var i = 0; i < 4; i++) {
+            choices[i].innerHTML = responses.one[i];
+            question.appendChild(choices[i]);
+        };
     });
 
     // Question 1 Click Events
 
-    choiceA.addEventListener('click', function (event) {
-        question.appendChild(feedback);
-        // subtract 15 seconds
-    });
-
-    choiceB.addEventListener('click', function (event) {
-        question.appendChild(feedback);
-        // subtract 15 seconds
-    });
-
-    // Correct Answer
-    choiceC.addEventListener('click', function (event) {
-        secondQuestion();
-    });
-
-    choiceD.addEventListener('click', function (event) {
-        question.appendChild(feedback);
-        // subtract 15 seconds
+    choices.forEach(function (choice, i) {
+        choice.onclick = function () {
+            if (i === answers[0]) {
+                secondQuestion();
+            } else {
+                question.appendChild(feedback);
+                //subtract 15 seconds
+            };
+        }
     });
 };
 
@@ -96,32 +84,22 @@ function secondQuestion() {
 
     question.innerHTML = questions[1] + '<br>'; // Second question
 
-    choiceA.textContent = 'A. ' + responses.two[0];
-    question.appendChild(choiceA);
-
-    choiceB.textContent = 'B. ' + responses.two[1];
-    question.appendChild(choiceB);
-
-    choiceC.textContent = 'C. ' + responses.two[2];
-    question.appendChild(choiceC);
-
-    choiceD.textContent = 'D. ' + responses.two[3];
-    question.appendChild(choiceD);
+    for (var i = 0; i < 4; i++) {
+        choices[i].textContent = responses.two[i];
+        question.appendChild(choices[i]);
+    };
 
     // Question 2 Click Events
 
-    choiceC.removeEventListener('click', firstQuestion());
-
-    choiceC.addEventListener('click', function (event) {
-        question.appendChild(feedback);
-        // subtract 15 seconds
-    });
-
-    choiceB.removeEventListener('click', firstQuestion());
-
-    // Correct Answer
-    choiceB.addEventListener('click', function (event) {
-        thirdQuestion();
+    choices.forEach(function (choice, i) {
+        choice.onclick = function () {
+            if (i === answers[1]) {
+                thirdQuestion();
+            } else {
+                question.appendChild(feedback);
+                //subtract 15 seconds
+            };
+        }
     });
 
 };
@@ -132,32 +110,24 @@ function thirdQuestion() {
 
     question.innerHTML = questions[2] + '<br>'; // Third question
 
-    choiceA.textContent = 'A. ' + responses.three[0];
-    question.appendChild(choiceA);
-
-    choiceB.textContent = 'B. ' + responses.three[1];
-    question.appendChild(choiceB);
-
-    choiceC.textContent = 'C. ' + responses.three[2];
-    question.appendChild(choiceC);
-
-    choiceD.textContent = 'D. ' + responses.three[3];
-    question.appendChild(choiceD);
+    for (var i = 0; i < 4; i++) {
+        choices[i].innerHTML = responses.three[i];
+        question.appendChild(choices[i]);
+    };
 
     // Question 3 Click Events
 
-    choiceB.removeEventListener('click', secondQuestion());
-
-    choiceB.addEventListener('click', function (event) {
-        question.appendChild(feedback);
+    choices.forEach(function (choice, i) {
+        choice.onclick = function () {
+            if (i === answers[2]) {
+                fourthQuestion();
+            } else {
+                question.appendChild(feedback);
+                //subtract 15 seconds
+            };
+        }
     });
 
-    choiceD.removeEventListener('click', secondQuestion());
-
-    // Correct Answer
-    choiceD.addEventListener('click', function (event) {
-        fourthQuestion();
-    });
 };
 
 function fourthQuestion() {
@@ -166,31 +136,22 @@ function fourthQuestion() {
 
     question.innerHTML = questions[3] + '<br>'; // Fourth question
 
-    choiceA.textContent = 'A. ' + responses.four[0];
-    question.appendChild(choiceA);
-
-    choiceC.textContent = 'B. ' + responses.four[1];
-    question.appendChild(choiceC);
-
-    choiceB.textContent = 'C. ' + responses.four[2];
-    question.appendChild(choiceB);
-
-    choiceD.textContent = 'D. ' + responses.four[3];
-    question.appendChild(choiceD);
+    for (var i = 0; i < 4; i++) {
+        choices[i].innerHTML = responses.four[i];
+        question.appendChild(choices[i]);
+    };
 
     // Question 4 Click Events
 
-    choiceD.removeEventListener('click', thirdQuestion());
-
-    choiceD.addEventListener('click', function (event) {
-        question.appendChild(feedback);
-    });
-
-    choiceA.removeEventListener('click', thirdQuestion());
-
-    // Correct Answer
-    choiceA.addEventListener('click', function (event) {
-        fifthQuestion();
+    choices.forEach(function (choice, i) {
+        choice.onclick = function () {
+            if (i === answers[3]) {
+                fifthQuestion();
+            } else {
+                question.appendChild(feedback);
+                //subtract 15 seconds
+            };
+        }
     });
 };
 
@@ -200,24 +161,21 @@ function fifthQuestion() {
 
     question.innerHTML = questions[4] + '<br>'; // Fifth question
 
-    choiceA.textContent = 'A. ' + responses.five[0];
-    question.appendChild(choiceA);
+    for (var i = 0; i < 4; i++) {
+        choices[i].textContent = responses.five[i];
+        question.appendChild(choices[i]);
+    };
 
-    choiceC.textContent = 'B. ' + responses.five[1];
-    question.appendChild(choiceC);
+    // Question 4 Click Events
 
-    choiceB.textContent = 'C. ' + responses.five[2];
-    question.appendChild(choiceB);
-
-    choiceD.textContent = 'D. ' + responses.five[3];
-    question.appendChild(choiceD);
-
-    // Question 5 Click Events
-
-    choiceA.removeEventListener('click', fourthQuestion());
-
-    // Correct Answer
-    choiceA.addEventListener('click', function (event) {
-        // Form to enter initials
+    choices.forEach(function (choice, i) {
+        choice.onclick = function () {
+            if (i === answers[4]) {
+                // Go to results page
+            } else {
+                question.appendChild(feedback);
+                //subtract 15 seconds
+            };
+        }
     });
 };
