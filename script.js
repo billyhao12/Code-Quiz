@@ -2,6 +2,9 @@
 
 var secondsLeft = 75;
 
+var highscores = [];
+
+
 function setTime() {
     var timerInterval = setInterval(function () {
         secondsLeft--;
@@ -19,7 +22,14 @@ function setTime() {
         clearInterval(timerInterval);
         title.innerHTML = 'Congratulations!';
         question.textContent = 'You completed the quiz with ' + secondsLeft + ' seconds remaining.';
+
+        // Displaying the form
         question.appendChild(recordScore);
+        recordScore.appendChild(enterNameLabel);
+        recordScore.appendChild(enterName);
+
+        // Stores score and navigates to the highscore page
+        storeHighscores();    
     };
 
     setTime.complete = complete;
@@ -30,10 +40,57 @@ function gameOver() {
     question.textContent = 'You ran out of time to complete the quiz! Refresh the page to try again.';
 }
 
+// Variables for score submission
 var recordScore = document.createElement('form');
-var enterNameLabel = document.createElement('label');
-var enterName = document.createElement('text')
 
+var enterNameLabel = document.createElement('label');
+    enterNameLabel.innerHTML = '<br> Enter name: ';
+
+var enterName = document.createElement('input');
+
+
+// Stores score and navigates to the highscore page
+function storeHighscores() {
+    
+    recordScore.addEventListener('submit', function (event) {
+        event.preventDefault();
+        var nameText = enterName.value;
+        var userScore = nameText + ': ' + secondsLeft + ' seconds';
+
+        if (nameText === '') {
+            return;
+        };
+
+        highscores.push(userScore);
+
+        // Store new score into localStorage
+        localStorage.setItem('highscores', JSON.stringify(highscores));
+
+        highscoresPage();
+    });
+}
+
+// Highscores page
+function highscoresPage() {
+    title.textContent = 'Highscores';
+    question.innerHTML = '';
+
+    // Retrieves data from localStorage and updates highscores array
+    var storedHighscores = JSON.parse(localStorage.getItem('highscores'));
+    if (storedHighscores !== null) {
+        highscores = storedHighscores;
+    }
+
+    for (var i = 0; i < highscores.length; i++) {
+        
+        var li = document.createElement('li');
+        li.textContent = highscores[i];
+        question.appendChild(li);
+
+    };
+}
+
+// Feedback for wrong answer
 var feedback = document.createElement('p');
 feedback.innerHTML = 'Wrong';
 
