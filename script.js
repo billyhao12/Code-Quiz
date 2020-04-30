@@ -2,7 +2,23 @@
 
 var startTime = 75;
 var elapsedTime = 0;
-var timeLeft = 75;
+var secondsLeft = 75;
+
+function setTime() {
+    var timerInterval = setInterval(function () {
+        secondsLeft--;
+        timer.textContent = 'Time remaining: ' + secondsLeft;
+    }, 1000);
+
+    if (secondsLeft === 0) {
+        clearInterval(timerInterval);
+        gameOver();
+    };
+}
+
+function gameOver() {
+    title.innerHTML = 'Game Over';
+}
 
 var feedback = document.createElement('p');
 feedback.innerHTML = 'Wrong';
@@ -33,8 +49,8 @@ var startButton = document.getElementById('start-button');
 
 var topBox = document.getElementById('topBox');
 var topRow = document.getElementById('topRow');
-var topLeftCol = document.getElementById('topLeftCol');
-var topRightCol = document.getElementById('topRightCol');
+var viewHighscores = document.getElementById('topLeftCol');
+var timer = document.getElementById('timer');
 
 var midBox = document.getElementById('midBox');
 var midRow = document.getElementById('midRow');
@@ -48,7 +64,6 @@ var question = document.getElementById('question');
 function firstQuestion() {
 
     // Question 1 Display
-
     startButton.addEventListener('click', function (event) {
 
         title.innerHTML = ''; // removes title
@@ -59,21 +74,23 @@ function firstQuestion() {
             choices[i].innerHTML = responses.one[i];
             question.appendChild(choices[i]);
         };
+
+        // Start the timer
+        setTime();
     });
 
     // Question 1 Click Events
-
     choices.forEach(function (choice, i) {
         choice.onclick = function () {
             if (i === answers[0]) {
                 secondQuestion();
             } else {
                 question.appendChild(feedback);
-                //subtract 15 seconds
+                secondsLeft = secondsLeft - 15;
             };
-        }
+        };
     });
-};
+}
 
 // Calling the firstQuestion() function
 firstQuestion();
@@ -97,7 +114,7 @@ function secondQuestion() {
                 thirdQuestion();
             } else {
                 question.appendChild(feedback);
-                //subtract 15 seconds
+                secondsLeft = secondsLeft - 15;
             };
         }
     });
@@ -123,7 +140,7 @@ function thirdQuestion() {
                 fourthQuestion();
             } else {
                 question.appendChild(feedback);
-                //subtract 15 seconds
+                secondsLeft = secondsLeft - 15;
             };
         }
     });
@@ -149,7 +166,7 @@ function fourthQuestion() {
                 fifthQuestion();
             } else {
                 question.appendChild(feedback);
-                //subtract 15 seconds
+                secondsLeft = secondsLeft - 15;
             };
         }
     });
@@ -174,7 +191,7 @@ function fifthQuestion() {
                 // Go to results page
             } else {
                 question.appendChild(feedback);
-                //subtract 15 seconds
+                secondsLeft = secondsLeft - 15;
             };
         }
     });
