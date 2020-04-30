@@ -1,24 +1,38 @@
-// Global Variables
+// Global Variables and Functions
 
-var startTime = 75;
-var elapsedTime = 0;
 var secondsLeft = 75;
 
 function setTime() {
     var timerInterval = setInterval(function () {
         secondsLeft--;
-        timer.textContent = 'Time remaining: ' + secondsLeft;
+        timer.textContent = 'Time Remaining: ' + secondsLeft;
+
+        if (secondsLeft <= 0) {
+            timer.textContent = 'Time\'s Up!';
+            clearInterval(timerInterval);
+            gameOver();
+        };
+
     }, 1000);
 
-    if (secondsLeft === 0) {
+    function complete() {
         clearInterval(timerInterval);
-        gameOver();
+        title.innerHTML = 'Congratulations!';
+        question.textContent = 'You completed the quiz with ' + secondsLeft + ' seconds remaining.';
+        question.appendChild(recordScore);
     };
+
+    setTime.complete = complete;
 }
 
 function gameOver() {
     title.innerHTML = 'Game Over';
+    question.textContent = 'You ran out of time to complete the quiz! Refresh the page to try again.';
 }
+
+var recordScore = document.createElement('form');
+var enterNameLabel = document.createElement('label');
+var enterName = document.createElement('text')
 
 var feedback = document.createElement('p');
 feedback.innerHTML = 'Wrong';
@@ -188,7 +202,7 @@ function fifthQuestion() {
     choices.forEach(function (choice, i) {
         choice.onclick = function () {
             if (i === answers[4]) {
-                // Go to results page
+                setTime.complete();
             } else {
                 question.appendChild(feedback);
                 secondsLeft = secondsLeft - 15;
