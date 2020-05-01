@@ -4,6 +4,11 @@ var secondsLeft = 75;
 
 var highscores = [];
 
+// Retrieves data from localStorage and updates highscores array
+var storedHighscores = JSON.parse(localStorage.getItem('highscores'));
+if (storedHighscores !== null) {
+    highscores = storedHighscores;
+}
 
 function setTime() {
     var timerInterval = setInterval(function () {
@@ -29,7 +34,7 @@ function setTime() {
         recordScore.appendChild(enterName);
 
         // Stores score and navigates to the highscore page
-        storeHighscores();    
+        storeHighscores();
     };
 
     setTime.complete = complete;
@@ -44,14 +49,14 @@ function gameOver() {
 var recordScore = document.createElement('form');
 
 var enterNameLabel = document.createElement('label');
-    enterNameLabel.innerHTML = '<br> Enter name: ';
+enterNameLabel.innerHTML = '<br> Enter name: ';
 
 var enterName = document.createElement('input');
 
 
 // Stores score and navigates to the highscore page
 function storeHighscores() {
-    
+
     recordScore.addEventListener('submit', function (event) {
         event.preventDefault();
         var nameText = enterName.value;
@@ -75,14 +80,8 @@ function highscoresPage() {
     title.textContent = 'Highscores';
     question.innerHTML = '';
 
-    // Retrieves data from localStorage and updates highscores array
-    var storedHighscores = JSON.parse(localStorage.getItem('highscores'));
-    if (storedHighscores !== null) {
-        highscores = storedHighscores;
-    }
-
     for (var i = 0; i < highscores.length; i++) {
-        
+
         var li = document.createElement('li');
         li.textContent = highscores[i];
         question.appendChild(li);
