@@ -119,6 +119,7 @@ var startButton = document.getElementById('start-button');
 
 var topBox = document.getElementById('topBox');
 var topRow = document.getElementById('topRow');
+
 var viewHighscores = document.getElementById('topLeftCol');
 var timer = document.getElementById('timer');
 
