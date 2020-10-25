@@ -4,6 +4,8 @@ var secondsLeft = 75;
 
 var highscores = [];
 
+var timerInterval;
+
 // Retrieves data from localStorage and updates highscores array
 var storedHighscores = JSON.parse(localStorage.getItem('highscores'));
 if (storedHighscores !== null) {
@@ -11,7 +13,7 @@ if (storedHighscores !== null) {
 }
 
 function setTime() {
-    var timerInterval = setInterval(function () {
+    timerInterval = setInterval(function () {
         secondsLeft--;
         timer.textContent = 'Time Remaining: ' + secondsLeft;
 
@@ -76,7 +78,11 @@ function storeHighscores() {
 }
 
 // Highscores page
-function highscoresPage() {
+function highscoresPage(event) {
+
+    event.preventDefault();
+
+    clearInterval(timerInterval);
     title.textContent = 'Highscores';
     question.innerHTML = '';
 
@@ -130,8 +136,10 @@ var midCol = document.getElementById('midCol');
 var title = document.getElementById('title');
 var question = document.getElementById('question');
 
-// Starting the quiz
+// View Highscores link
+viewHighscores.addEventListener('click', highscoresPage);
 
+// Starting the quiz
 function firstQuestion() {
 
     // Question 1 Display
