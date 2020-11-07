@@ -91,6 +91,25 @@ function highscoresPage() {
         question.appendChild(li);
 
     };
+    
+}
+
+function highscoresPageOnClick(event) {
+
+    event.preventDefault();
+
+    clearInterval(timerInterval);
+    title.textContent = 'Highscores';
+    question.innerHTML = '';
+
+    for (var i = 0; i < highscores.length; i++) {
+
+        var li = document.createElement('li');
+        li.textContent = highscores[i];
+        question.appendChild(li);
+
+    };
+
 }
 
 // Feedback for wrong answer
@@ -135,7 +154,7 @@ var title = document.getElementById('title');
 var question = document.getElementById('question');
 
 // View Highscores link
-viewHighscores.addEventListener('click', highscoresPage);
+viewHighscores.addEventListener('click', highscoresPageOnClick);
 
 // Starting the quiz
 function firstQuestion() {
