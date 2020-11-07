@@ -78,9 +78,7 @@ function storeHighscores() {
 }
 
 // Highscores page
-function highscoresPage(event) {
-
-    event.preventDefault();
+function highscoresPage() {
 
     clearInterval(timerInterval);
     title.textContent = 'Highscores';
