@@ -55,26 +55,34 @@ enterNameLabel.innerHTML = '<br> Enter name: ';
 
 var enterName = document.createElement('input');
 
+var eventListenerExists = false;
 
 // Stores score and navigates to the highscore page
 function storeHighscores() {
 
-    recordScore.addEventListener('submit', function (event) {
-        event.preventDefault();
-        var nameText = enterName.value;
-        var userScore = nameText + ': ' + secondsLeft + ' seconds';
+    if (!eventListenerExists) {
 
-        if (nameText === '') {
-            return;
-        };
+        recordScore.addEventListener('submit', function (event) {
+            event.preventDefault();
+            var nameText = enterName.value;
+            var userScore = nameText + ': ' + secondsLeft + ' seconds';
 
-        highscores.push(userScore);
+            if (nameText === '') {
+                return;
+            };
 
-        // Store new score into localStorage
-        localStorage.setItem('highscores', JSON.stringify(highscores));
+            highscores.push(userScore);
 
-        highscoresPage();
-    });
+            // Store new score into localStorage
+            localStorage.setItem('highscores', JSON.stringify(highscores));
+
+            highscoresPage();
+        });
+
+        eventListenerExists = true;
+
+    }
+
 }
 
 // Highscores page
@@ -91,6 +99,21 @@ function highscoresPage() {
         question.appendChild(li);
 
     };
+
+    if (document.getElementById('start-button') === null && document.getElementById('restart-button') === null) {
+
+        let restartBtn = document.createElement('button');
+        restartBtn.setAttribute('class', 'btn btn-primary');
+        restartBtn.setAttribute('id', 'restart-button');
+        restartBtn.textContent = 'Restart Quiz';
+        midCol.appendChild(restartBtn);
+        restartBtn.addEventListener('click', function() {
+            clearInterval(timerInterval);
+            secondsLeft = 75;
+            restartBtn.remove();
+            firstQuestion();
+        });
+    }
     
 }
 
@@ -156,24 +179,25 @@ var question = document.getElementById('question');
 // View Highscores link
 viewHighscores.addEventListener('click', highscoresPageOnClick);
 
+startButton.addEventListener('click', function (event) {
+    firstQuestion();
+});
+
 // Starting the quiz
 function firstQuestion() {
 
     // Question 1 Display
-    startButton.addEventListener('click', function (event) {
+    title.innerHTML = ''; // removes title
+    startButton.remove(); // removes start button
+    question.innerHTML = questions[0] + '<br>'; // First question
 
-        title.innerHTML = ''; // removes title
-        startButton.parentNode.removeChild(startButton); // removes start button
-        question.innerHTML = questions[0] + '<br>'; // First question
+    for (var i = 0; i < 4; i++) {
+        choices[i].innerHTML = responses.one[i];
+        question.appendChild(choices[i]);
+    };
 
-        for (var i = 0; i < 4; i++) {
-            choices[i].innerHTML = responses.one[i];
-            question.appendChild(choices[i]);
-        };
-
-        // Start the timer
-        setTime();
-    });
+    // Start the timer
+    setTime();
 
     // Question 1 Click Events
     choices.forEach(function (choice, i) {
@@ -187,9 +211,6 @@ function firstQuestion() {
         };
     });
 }
-
-// Calling the firstQuestion() function
-firstQuestion();
 
 function secondQuestion() {
 
