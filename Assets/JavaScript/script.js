@@ -44,7 +44,23 @@ function setTime() {
 
 function gameOver() {
     title.innerHTML = 'Game Over';
-    question.textContent = 'You ran out of time to complete the quiz! Refresh the page to try again.';
+    question.textContent = 'You ran out of time to complete the quiz!';
+
+    if (document.getElementById('start-button') === null && document.getElementById('restart-button') === null) {
+
+        let restartBtn = document.createElement('button');
+        restartBtn.setAttribute('class', 'btn btn-primary');
+        restartBtn.setAttribute('id', 'restart-button');
+        restartBtn.textContent = 'Restart Quiz';
+        midCol.appendChild(restartBtn);
+        restartBtn.addEventListener('click', function() {
+            clearInterval(timerInterval);
+            secondsLeft = 75;
+            restartBtn.remove();
+            firstQuestion();
+        });
+    }
+
 }
 
 // Variables for score submission
